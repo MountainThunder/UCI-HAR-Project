@@ -3,27 +3,25 @@
 
 library(plyr)
 library(dplyr)
-library(janitor)
-
 
 ## Download file & unzip
-#fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-#download.file(fileURL, destfile = "Dataset.zip")
-#unzip("Dataset.zip")
+fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+download.file(fileURL, destfile = "Dataset.zip")
+unzip("Dataset.zip")
 
 ## Read test and train data in
-x_testFile <- "D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\test\\X_test.txt"
-y_testFile <-"D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\test\\y_test.txt"
-#x_testData <- read.table(x_testFile)
-#y_testData <- read.table(y_testFile)
+x_testFile <- "UCI HAR Dataset\\test\\X_test.txt"
+y_testFile <-"UCI HAR Dataset\\test\\y_test.txt"
+x_testData <- read.table(x_testFile)
+y_testData <- read.table(y_testFile)
 
-x_trainFile <- "D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\train\\X_train.txt"
-y_trainFile <- "D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\train\\y_train.txt"
-#x_trainData <- read.table(x_trainFile)
-#y_trainData <- read.table(y_trainFile)
+x_trainFile <- "UCI HAR Dataset\\train\\X_train.txt"
+y_trainFile <- "UCI HAR Dataset\\train\\y_train.txt"
+x_trainData <- read.table(x_trainFile)
+y_trainData <- read.table(y_trainFile)
 
 ## Read in features file and assign as variable names to x_test and x_train.
-featureFile <-"D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\features.txt"
+featureFile <-"UCI HAR Dataset\\features.txt"
 featureData <- read.table(featureFile, header=FALSE)
 VariableNames <- as.vector(featureData$V2)
 colnames(x_testData) <- VariableNames
@@ -38,11 +36,11 @@ train <- bind_cols(y_trainData, x_trainData)
 test <- bind_cols(y_testData, x_testData)
 
 #read in subject test table 
-subjectTestFile <-"D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\test\\subject_test.txt"
+subjectTestFile <-"UCI HAR Dataset\\test\\subject_test.txt"
 subjectTestData <- read.table(subjectTestFile, header=FALSE)
 
 #read in subject train table 
-subjectTrainFile <-"D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\train\\subject_train.txt"
+subjectTrainFile <-"UCI HAR Dataset\\train\\subject_train.txt"
 subjectTrainData <- read.table(subjectTrainFile, header=FALSE)
 
 # Add column name for subject
@@ -60,7 +58,7 @@ mergedData <- bind_rows(test, train)
 meanAndSTDData <- select(mergedData, subject, activity, matches(".*([Mm][Ee][Aa][Nn]|[Ss][Tt][Dd]).*"))
 
 ## Step 3: Uses descriptive activity names to name the activities in the data set
-activityFile <-"D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\UCI HAR Dataset\\activity_labels.txt"
+activityFile <-"UCI HAR Dataset\\activity_labels.txt"
 activityNames <- read.table(activityFile)
 activityVariableNames <- as.vector(activityNames$V2)
 meanAndSTDData$activity <- mapvalues(meanAndSTDData$activity, from=1:6, to=activityVariableNames)
@@ -90,8 +88,6 @@ names(meanAndSTDData) <- gsub(",", " and ", names(meanAndSTDData))
 names(meanAndSTDData) <- gsub("gyro", " gyro ", names(meanAndSTDData))
 names(meanAndSTDData) <- gsub("freq", " frequency", names(meanAndSTDData))
 
-#cleanData <- clean_names(meanAndSTDData, case="lower_camel")
-
 # Step 5: From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 averageData <- meanAndSTDData %>%
     group_by(subject, activity) %>%
@@ -99,5 +95,4 @@ averageData <- meanAndSTDData %>%
 
 names(averageData) <- gsub("_", " ", names(averageData))
 
-## Write final file
-write.table(averageData, "D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\averageData.txt", row.name=FALSE)
+write.table(averageData, "averageData.txt", row.name=FALSE)
