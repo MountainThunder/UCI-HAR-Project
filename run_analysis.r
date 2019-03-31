@@ -98,4 +98,6 @@ averageData <- meanAndSTDData %>%
     dplyr::summarise_all(list(average = mean))
 
 names(averageData) <- gsub("_", " ", names(averageData))
-write.table(averageData, "averageData.txt", row.name=FALSE)
+
+## Write final file
+write.table(averageData, "D:\\Jessica\\Coursera Data Science\\Getting and Cleaning Data\\Week 4\\averageData.txt", row.name=FALSE)
