@@ -1,10 +1,6 @@
 # UCI-HAR-Project
 Getting and Cleaning Data Week 4 Project
 
-### Jessica Friedman
-### Getting and Cleaning Data - Coursera Course
-### Week 4 Project
-
 ## Analysis
 
 First, the files from the UCI HAR Dataset were downloaded and read.table was used to read the data into R. The features.txt file was used to assign variable names to both the x-test and x-train datasets. Labelling each variable ensured that variables in both the train and text sets would be lined up correctly when merged together.
